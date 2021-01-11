@@ -29,11 +29,15 @@ public class PublicStatusListener implements StatusListener {
 		logger.debug("Found matching public status: \n"+status.getText());
 		if(!status.isRetweetedByMe()) {
 			try {
+				long statusId = status.getId();
+				if(status.isRetweet()) {
+					statusId = status.getRetweetedStatus().getId();
+				}
 				logger.debug("Retweeting above");
-				twitterBot.unRetweetStatus(status.getId());
-				twitterBot.retweetStatus(status.getId());
-				twitterBot.destroyFavorite(status.getId());
-				twitterBot.createFavorite(status.getId());
+				twitterBot.unRetweetStatus(statusId);
+				twitterBot.retweetStatus(statusId);
+				twitterBot.destroyFavorite(statusId);
+				twitterBot.createFavorite(statusId);
 			} catch (TwitterException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
